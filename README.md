@@ -1,4 +1,4 @@
-# hanma-cli-mail
+# shop by cli
 
 ## Project setup
 ```
