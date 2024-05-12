@@ -50,26 +50,26 @@ const routes = [
       index: 1,
     },
   },
-  {
-    path: "/login",
-    name: "login",
-    component: login,
-    beforeEnter(to, from, next) {
-      let isLogin = localStorage.getItem("isLogin");
-      isLogin ? next({ name: "home" }) : next();
-    },
-    meta: {
-      index: 10,
-    },
-  },
-  {
-    path: "/register",
-    name: "register",
-    component: register,
-    meta: {
-      index: 20,
-    },
-  },
+//   {
+//     path: "/login",
+//     name: "login",
+//     component: login,
+//     beforeEnter(to, from, next) {
+//       let isLogin = localStorage.getItem("isLogin");
+//       isLogin ? next({ name: "home" }) : next();
+//     },
+//     meta: {
+//       index: 10,
+//     },
+//   },
+//   {
+//     path: "/register",
+//     name: "register",
+//     component: register,
+//     meta: {
+//       index: 20,
+//     },
+//   },
   {
     path: "/address",
     name: "address",
@@ -129,11 +129,6 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
-router.beforeEach((to, from, next) => {
-  let isLogin = localStorage.getItem("isLogin");
-  isLogin || to.name === "login" || to.name === "register"
-    ? next()
-    : next({ name: "login" });
-});
+
 
 export default router;
