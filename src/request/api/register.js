@@ -1,9 +1,9 @@
-import service from "..";
-//登录
-export function getRegister(data) {
+import service from '..'
+// 登录
+export function getRegister (data) {
   return service({
-    method: "POST",
-    url: "/api/v1/register",
-    data: data,
-  });
+    method: 'POST',
+    url: '/api/v1/register',
+    data: data
+  })
 }

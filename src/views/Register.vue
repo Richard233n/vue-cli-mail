@@ -42,26 +42,26 @@
 </template>
 
 <script setup>
-import { getRegister } from "@/request/api/register.js";
-import { ref } from "vue";
-import router from "../router";
-import { Toast } from "vant";
-let username = ref(""),
-  password = ref(""),
-  repassword = ref("");
+import { getRegister } from '@/request/api/register.js'
+import { ref } from 'vue'
+import router from '../router'
+import { Toast } from 'vant'
+const username = ref('')
+const password = ref('')
+const repassword = ref('')
 const onSubmit = async () => {
-  let res = await getRegister({
+  const res = await getRegister({
     username: username.value,
     password: password.value,
-    repassword: repassword.value,
-  });
-  if (res.data.msg == "ok") {
-    Toast.success("注册成功");
-    router.push("/login");
+    repassword: repassword.value
+  })
+  if (res.data.msg == 'ok') {
+    Toast.success('注册成功')
+    router.push('/login')
   } else {
-    Toast.fail(res.data.msg);
+    Toast.fail(res.data.msg)
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

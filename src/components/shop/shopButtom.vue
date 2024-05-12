@@ -33,78 +33,75 @@
 
 <script setup>
 // import { useComputePrice } from "@/composible/priceComputed.js";
-import { ref, onMounted, defineProps, computed, watch } from "vue";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { useComputePrice } from "@/composible/priceComputed.js";
+import { ref, onMounted, defineProps, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { useComputePrice } from '@/composible/priceComputed.js'
 import { Dialog } from 'vant'
 
-const store = useStore();
+const store = useStore()
 const props = defineProps({
-  title: String,
+  title: String
 })
 
-let hasallchecked = ref(true);
+const hasallchecked = ref(true)
 
-let title = ref('');
+const title = ref('')
 
-title.value = props.title || JSON.parse(localStorage.getItem("titleName"));
+title.value = props.title || JSON.parse(localStorage.getItem('titleName'))
 
 const productList = computed(() => {
   return store.state.cartList[title.value]
 })
 
-
 // 只要有一个没被选中，全选按钮就为false
 watch(() => productList.value,
   val => {
-    let allchecked = true;
-    for (let i in val) {
+    let allchecked = true
+    for (const i in val) {
       if (!val[i].checked) {
-        allchecked = false;
-        break;
+        allchecked = false
+        break
       }
     }
-    hasallchecked.value = allchecked;
+    hasallchecked.value = allchecked
   }, {
-  deep: true,
-  immediate: true,
-})
+    deep: true,
+    immediate: true
+  })
 // 当全选按钮为true时，全都变为true
 const changeAllSelected = function () {
   if (hasallchecked.value) {
-    store.commit('allChecked', title.value);
+    store.commit('allChecked', title.value)
   } else {
-    store.commit('allUnChecked', title.value);
+    store.commit('allUnChecked', title.value)
   }
   // console.log(hasallchecked.value)
 }
-let show = ref(false);
+const show = ref(false)
 
-
-let { computedShopPrice } = useComputePrice(title.value);
+const { computedShopPrice } = useComputePrice(title.value)
 
 const clearCart = function () {
   Dialog.confirm({
     title: '提示',
     message:
-      '确定清空购物车吗？',
+      '确定清空购物车吗？'
   })
     .then(() => {
-      store.commit('clearCart', title.value);
-      show.value = false;
+      store.commit('clearCart', title.value)
+      show.value = false
     })
     .catch(() => {
       // on cancel
-    });
-
+    })
 }
 
 // console.log(shop);
 // const price = computed(() => {
 //   return store.state.price * 100
 // })
-let router = useRouter();
+const router = useRouter()
 const onSubmit = function (title) {
   router.push({
     name: 'createorder',
@@ -115,9 +112,9 @@ const onSubmit = function (title) {
 }
 
 const changeProduct = function (data) {
-  store.commit("changeCartList", { ...data, title: title.value }); //更改本地缓存
+  store.commit('changeCartList', { ...data, title: title.value }) // 更改本地缓存
   // console.log(data);
-};
+}
 </script>
 
 <style lang="scss" scoped>

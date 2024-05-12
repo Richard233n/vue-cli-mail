@@ -18,36 +18,36 @@
         isDefault: info.isDefault,
     }" @save="onSave" />
 </template>
-    
-<script setup>
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { saveAddress, beDefault } from "@/request/api/address.js";
-import { areaList } from '@vant/area-data';
 
-const info = ref([]);
-const userid = JSON.parse(localStorage.getItem('userInfo')).data.id;
-const router = useRouter();
+<script setup>
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { saveAddress, beDefault } from '@/request/api/address.js'
+import { areaList } from '@vant/area-data'
+
+const info = ref([])
+const userid = JSON.parse(localStorage.getItem('userInfo')).data.id
+const router = useRouter()
 const onClickLeft = function () {
-    router.go(-1)
-};
+  router.go(-1)
+}
 const onClickRight = function () {
-    info.value = [];
+  info.value = []
 }
 const onSave = async function (content) {
-    // console.log(content)
-    await saveAddress(userid, {
-        real_name: content.name,
-        mobile: content.tel,
-        city: content.province + content.city,
-        area: content.county,
-        house: content.addressDetail
-    })
-    router.go(-1)
+  // console.log(content)
+  await saveAddress(userid, {
+    real_name: content.name,
+    mobile: content.tel,
+    city: content.province + content.city,
+    area: content.county,
+    house: content.addressDetail
+  })
+  router.go(-1)
 }
 
 </script>
-    
+
 <style>
 .newaddresstop {
 

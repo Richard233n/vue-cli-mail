@@ -10,18 +10,18 @@
 
 <script>
 export default {
-  data() {
-    return { search: "" };
+  data () {
+    return { search: '' }
   },
   methods: {
     onClickLeft: function () {
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
     searching: function () {
-      this.$emit("searchRes", this.search);
-    },
-  },
-};
+      this.$emit('searchRes', this.search)
+    }
+  }
+}
 </script>
 
 <style>

@@ -27,27 +27,27 @@
 </template>
 
 <script setup>
-import docker from "@/components/Home/_docker.vue";
-import { onMounted, ref } from "vue";
-import { getOrderList } from "@/request/api/order.js";
-import { useComputePricePro } from "@/composible/priceComputed.js";
-import { useRouter } from "vue-router";
+import docker from '@/components/Home/_docker.vue'
+import { onMounted, ref } from 'vue'
+import { getOrderList } from '@/request/api/order.js'
+import { useComputePricePro } from '@/composible/priceComputed.js'
+import { useRouter } from 'vue-router'
 
-let userinfo = JSON.parse(localStorage.getItem("userInfo")) || {};
-let productList = ref([]);
+const userinfo = JSON.parse(localStorage.getItem('userInfo')) || {}
+const productList = ref([])
 const changeProducts = function () {
-  let initial = productList.value
+  const initial = productList.value
   for (let i = 0; i < productList.value.length; i++) {
     initial[i].products = JSON.parse(initial[i].products)
     initial[i].totalValue = useComputePricePro(initial[i].products)
   }
-  productList.value = initial;
+  productList.value = initial
 }
 
-const router = useRouter();
+const router = useRouter()
 
 const toCreateOrder = function (data) {
-  router.push({ name: "createorder", params: { product: JSON.stringify(data) } });
+  router.push({ name: 'createorder', params: { product: JSON.stringify(data) } })
 }
 
 onMounted(async () => {

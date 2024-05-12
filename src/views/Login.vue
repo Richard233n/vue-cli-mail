@@ -23,33 +23,33 @@
 </template>
 
 <script>
-import { getLogin } from "@/request/api/login.js";
-import router from "@/router/index";
+import { getLogin } from '@/request/api/login.js'
+import router from '@/router/index'
 export default {
-  data() {
+  data () {
     return {
-      username: "",
-      password: "",
-    };
+      username: '',
+      password: ''
+    }
   },
   methods: {
     onSubmit: async function () {
-      let res = await getLogin({
+      const res = await getLogin({
         username: this.username,
-        password: this.password,
-      });
-      if (res.data.msg == "ok") {
-        this.$toast.success("登录成功");
-        (localStorage.userInfo = JSON.stringify(res.data)), (localStorage.isLogin = true);
+        password: this.password
+      })
+      if (res.data.msg == 'ok') {
+        this.$toast.success('登录成功');
+        (localStorage.userInfo = JSON.stringify(res.data)), (localStorage.isLogin = true)
         setTimeout(() => {
-          router.push("/");
-        }, 2000);
+          router.push('/')
+        }, 2000)
       } else {
-        this.$toast.success(res.data.msg);
+        this.$toast.success(res.data.msg)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

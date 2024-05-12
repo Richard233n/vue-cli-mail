@@ -20,14 +20,14 @@
 </template>
 
 <script setup>
-import { defineProps, onMounted } from "vue";
-import { useRouter } from "vue-router";
-let props = defineProps(["shopList"]);
+import { defineProps, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+const props = defineProps(['shopList'])
 
-const router = useRouter();
+const router = useRouter()
 const toshop = function (id, title) {
-  router.push({ name: "shop", params: { id: id, title: title } });
-};
+  router.push({ name: 'shop', params: { id: id, title: title } })
+}
 </script>
 
 <style lang="scss" scoped>

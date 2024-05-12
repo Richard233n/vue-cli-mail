@@ -50,131 +50,127 @@
     </div>
 
 </template>
-    
+
 <!-- 创建订单页面： -->
 <!--    从购物车进入，传入title，之后上传获取数据进行渲染 -->
 <!--    从订单页面进入，就只需要对订单信息进行渲染即可 -->
 <script setup>
-import { useComputePricePro } from "@/composible/priceComputed.js";
-import { useRouter } from "vue-router";
-import { getCreateOrder, getDefaultAddress } from "@/request/api/createOrder.js";
+import { useComputePricePro } from '@/composible/priceComputed.js'
+import { useRouter } from 'vue-router'
+import { getCreateOrder, getDefaultAddress } from '@/request/api/createOrder.js'
 
-import { defineProps, ref, onMounted, onUnmounted, onBeforeUnmount, } from "vue";
-import { useStore } from "vuex";
+import { defineProps, ref, onMounted, onUnmounted, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
 
-
-let store = useStore();
+const store = useStore()
 // 如果从订单页面进入，传入product，从主页
 const props = defineProps({
-    title: String,
-    product: String,
-    address: String,
+  title: String,
+  product: String,
+  address: String
 })
 
-let show = ref(false);
+const show = ref(false)
 
 // 处理要发送请求的数据
-let shop = store.state.cartList[props.title];
-let shopid = ref(0);
-let products = ref([]);
+const shop = store.state.cartList[props.title]
+const shopid = ref(0)
+const products = ref([])
 const handleProduct = function () {
-    for (let i in shop) {
-        if (shop[i] && shop[i].checked) {
-            products.value.push({ id: parseInt(i, 10), num: shop[i].count });
-            shopid.value = shop[i].shop_id;
-            // console.log(typeof shop[i].shop_id)
-        }
+  for (const i in shop) {
+    if (shop[i] && shop[i].checked) {
+      products.value.push({ id: parseInt(i, 10), num: shop[i].count })
+      shopid.value = shop[i].shop_id
+      // console.log(typeof shop[i].shop_id)
     }
+  }
 }
 // 删除state中该商店的信息
 const removeShop = function (title) {
-    store.commit('removeShop', title);
+  store.commit('removeShop', title)
 }
 // 处理地址：发送请求获取默认地址，换地址之后，更新地址，接受传参
-const userid = JSON.parse(localStorage.getItem('userInfo')).data.id;
-
+const userid = JSON.parse(localStorage.getItem('userInfo')).data.id
 
 // 发送请求获取订单和商品信息
-let productList = ref([]);
+const productList = ref([])
 
 // 渲染全部价格
 // 从商品详情页面进入，
 // let { useComputePrice } = useComputePrice(props.title);
 // let price = computedShopPrice.value || 0;
 
-let prices = ref(0);
+const prices = ref(0)
 
-let checkAddress = ref({});
+const checkAddress = ref({})
 onMounted(() => {
-    // 如果是从地址选取页面进入
-    if (props.address) {
-        checkAddress.value = JSON.parse(props.address);
-    } else {
-        getDefaultAddress(userid).then(res => {
-            checkAddress.value = res.data.data;
-        });
-    }
-    // 不是从订单列表过来的而且不是原地刷新的情况，属于是从商品页面进来
-    if (!props.product && props.title) {
-        // 从商品页面进来，就发送请求，获取商品信息
-        handleProduct();
-        getCreateOrder({
-            id: JSON.parse(localStorage.getItem('userInfo')).data.id,
-            addressId: 1,
-            shopId: shopid.value,
-            shopName: props.title,
-            products: JSON.stringify(products.value)
-        }).then(res => {
-            productList.value = res.data.data;
-            prices.value = useComputePricePro(productList.value.products);
-            removeShop(props.title);
-        })
-        // 计算总价,因为方法是计算属性，所以会在删除该商店信息之后再次改变值，所以直接赋值给一个定值就消除了响应式
-    }
-    else {
-        // 从订单列表页面进来，或者原地刷新,或者从地址选取页面返回。就接受传参或者取本地缓存开始渲染
-        elsefunction();
-        localStorage.removeItem('orderInfo')
-    }
+  // 如果是从地址选取页面进入
+  if (props.address) {
+    checkAddress.value = JSON.parse(props.address)
+  } else {
+    getDefaultAddress(userid).then(res => {
+      checkAddress.value = res.data.data
+    })
+  }
+  // 不是从订单列表过来的而且不是原地刷新的情况，属于是从商品页面进来
+  if (!props.product && props.title) {
+    // 从商品页面进来，就发送请求，获取商品信息
+    handleProduct()
+    getCreateOrder({
+      id: JSON.parse(localStorage.getItem('userInfo')).data.id,
+      addressId: 1,
+      shopId: shopid.value,
+      shopName: props.title,
+      products: JSON.stringify(products.value)
+    }).then(res => {
+      productList.value = res.data.data
+      prices.value = useComputePricePro(productList.value.products)
+      removeShop(props.title)
+    })
+    // 计算总价,因为方法是计算属性，所以会在删除该商店信息之后再次改变值，所以直接赋值给一个定值就消除了响应式
+  } else {
+    // 从订单列表页面进来，或者原地刷新,或者从地址选取页面返回。就接受传参或者取本地缓存开始渲染
+    elsefunction()
+    localStorage.removeItem('orderInfo')
+  }
 })
 const elsefunction = function () {
-    if (props.product) {
-        productList.value = JSON.parse(props.product)
-    }
-    else {
-        productList.value = JSON.parse(localStorage.getItem('orderInfo'))
-    }
-    prices.value = useComputePricePro(productList.value.products)
+  if (props.product) {
+    productList.value = JSON.parse(props.product)
+  } else {
+    productList.value = JSON.parse(localStorage.getItem('orderInfo'))
+  }
+  prices.value = useComputePricePro(productList.value.products)
 }
 // 跳转到别的页面触发,刷新不会触发
 onBeforeUnmount(() => {
-    localStorage.setItem('orderInfo', JSON.stringify(productList.value));
+  localStorage.setItem('orderInfo', JSON.stringify(productList.value))
 })
 
 // 返回按钮
-const router = useRouter();
+const router = useRouter()
 const cancel = function () {
-    router.push({ name: 'order' });
+  router.push({ name: 'order' })
 }
 // 模态框出现
 const goback = function () {
-    show.value = true
+  show.value = true
 }
 const toChangeAddress = function () {
-    router.push({ name: 'address' });
-    store.commit('changeFrom', 'fromCreateOrder');
+  router.push({ name: 'address' })
+  store.commit('changeFrom', 'fromCreateOrder')
 }
 // 路由跳转走，但是不会触发这两个事件，会触发onBeforeUnmount、onUnmounted事件
 // 所以这里只处理刷新事件
 window.addEventListener('beforeunload', function () {
-    localStorage.setItem('orderInfo', JSON.stringify(productList.value));
+  localStorage.setItem('orderInfo', JSON.stringify(productList.value))
 })
 window.addEventListener('load', function () {
-    localStorage.removeItem('orderInfo')
+  localStorage.removeItem('orderInfo')
 })
 
 </script>
-    
+
 <style lang="scss" scoped>
 .wrap {
     .mask {

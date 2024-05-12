@@ -33,30 +33,30 @@
 </template>
 
 <script setup>
-import docker from "@/components/Home/_docker.vue";
-import { onMounted, ref } from "vue";
+import docker from '@/components/Home/_docker.vue'
+import { onMounted, ref } from 'vue'
 // import Nearby from "@/components/shop/Nearby.vue";
-import shopInfo from "@/components/shop/shopInfo.vue";
-import { getShopList } from "@/request/api/shop.js";
+import shopInfo from '@/components/shop/shopInfo.vue'
+import { getShopList } from '@/request/api/shop.js'
 // search内容
-let search = ref("");
-let shopList = ref([]);
+const search = ref('')
+const shopList = ref([])
 const classification = [
-    { name: "便利超市", src: "便利超市.png" },
-    { name: "生鲜蔬菜", src: "生鲜蔬菜.png" },
-    { name: "品牌免运", src: "品牌免运.png" },
-    { name: "红包优惠", src: "优惠.png" },
-    { name: "水果零食", src: "水果零食.png" },
-    { name: "鲜花绿植", src: "鲜花绿植.png" },
-    { name: "医药健康", src: "医药健康.png" },
-    { name: "家居时尚", src: "家居.png" },
-    { name: "签到", src: "签到.png" },
-    { name: "烘焙蛋糕", src: "蛋糕.png" },
-];
+  { name: '便利超市', src: '便利超市.png' },
+  { name: '生鲜蔬菜', src: '生鲜蔬菜.png' },
+  { name: '品牌免运', src: '品牌免运.png' },
+  { name: '红包优惠', src: '优惠.png' },
+  { name: '水果零食', src: '水果零食.png' },
+  { name: '鲜花绿植', src: '鲜花绿植.png' },
+  { name: '医药健康', src: '医药健康.png' },
+  { name: '家居时尚', src: '家居.png' },
+  { name: '签到', src: '签到.png' },
+  { name: '烘焙蛋糕', src: '蛋糕.png' }
+]
 onMounted(async () => {
-    let res = await getShopList();
-    shopList.value = res.data.data;
-});
+  const res = await getShopList()
+  shopList.value = res.data.data
+})
 </script>
 
 <style lang="scss" scoped>

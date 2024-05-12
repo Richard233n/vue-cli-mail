@@ -24,107 +24,107 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, computed, ref, watch, defineProps, onUpdated } from "vue";
-import { StorageSerializers, useStorage } from "@vueuse/core";
-import { getProductList } from "@/request/api/shop.js";
-import { computePrice } from "@/composible/priceComputed.js";
-import { useStore } from "vuex";
+import { onMounted, reactive, computed, ref, watch, defineProps, onUpdated } from 'vue'
+import { StorageSerializers, useStorage } from '@vueuse/core'
+import { getProductList } from '@/request/api/shop.js'
+import { computePrice } from '@/composible/priceComputed.js'
+import { useStore } from 'vuex'
 
-let active = ref(0),
-  // tab = ref("all"),
-  productList = ref([]), //渲染商品列表
-  searchList = ref([]); //渲染搜索结果
+const active = ref(0)
+// tab = ref("all"),
+const productList = ref([]) // 渲染商品列表
+const searchList = ref([]) // 渲染搜索结果
 const categories = [
-  { name: "全部商品", tab: "all" },
-  { name: "新鲜水果", tab: "fruit" },
-  { name: "休闲食品", tab: "food" },
-  { name: "时令蔬菜", tab: "greens" },
-  { name: "肉蛋家禽", tab: "meat" },
-];
+  { name: '全部商品', tab: 'all' },
+  { name: '新鲜水果', tab: 'fruit' },
+  { name: '休闲食品', tab: 'food' },
+  { name: '时令蔬菜', tab: 'greens' },
+  { name: '肉蛋家禽', tab: 'meat' }
+]
 // let productLis = reactive({ productList: [] });
-let props = defineProps({
+const props = defineProps({
   id: String,
   searchProduct: String,
-  title: String,
-});
+  title: String
+})
 // 因为props的值不能改，是只读的
-let title = ref('');
+const title = ref('')
 
-let data = reactive({
+const data = reactive({
   id: props.id,
-  tab: "all",
-});
-//左侧分类导航点击事件，一进来不会触发
-//请求返回之后，应该对返回数据进行二次处理=>跟vuex中的数据进行比较，如果有就将item.count变为vuex中的count
+  tab: 'all'
+})
+// 左侧分类导航点击事件，一进来不会触发
+// 请求返回之后，应该对返回数据进行二次处理=>跟vuex中的数据进行比较，如果有就将item.count变为vuex中的count
 const onChangeLeft = async (index) => {
-  data.tab = categories[index].tab;
-  let res = await getProductList(data);
-  localProduction(res.data.data);
-};
+  data.tab = categories[index].tab
+  const res = await getProductList(data)
+  localProduction(res.data.data)
+}
 
-//对返回数据进行初步修改，添加count属性和checked属性
+// 对返回数据进行初步修改，添加count属性和checked属性
 const localProduction = function (list) {
   // 和store中的值进行对比，如果有就将count变为store中的count
-  let product = store.state.cartList[title.value];
+  const product = store.state.cartList[title.value]
   if (!product) {
-    //如果本地缓存中没有这个商店，所以
-    list.forEach((item) => ((item.count = 0), (item.checked = true)));
-    //有这个商店就看有没有这个产品
+    // 如果本地缓存中没有这个商店，所以
+    list.forEach((item) => ((item.count = 0), (item.checked = true)))
+    // 有这个商店就看有没有这个产品
   } else {
     for (let j = 0; j < list.length; j++) {
       if (product[list[j].id]) {
-        list[j].count = product[list[j].id].count;
-        list[j].checked = true;
+        list[j].count = product[list[j].id].count
+        list[j].checked = true
       } else {
-        list[j].count = 0;
-        list[j].checked = true;
+        list[j].count = 0
+        list[j].checked = true
       }
     }
   }
-  productList.value = list;
+  productList.value = list
   // console.log(productList.value);
-};
+}
 
-//每次请求回来的数据都会进行处理，和store里的值进行比较，有就变，没有就不变
+// 每次请求回来的数据都会进行处理，和store里的值进行比较，有就变，没有就不变
 onMounted(async () => {
   // 我想知道这是哪个商店，一方面是进入时传入的值，另一方面时存入本地缓存中的值
-  title.value = props.title || JSON.parse(localStorage.getItem("titleName"));
-  let res = await getProductList(data);
-  searchList.value = res.data.data; //备份用于搜索的
-  localProduction(res.data.data); //对数据进行初步修改,添加count属性和checked属性
-});
+  title.value = props.title || JSON.parse(localStorage.getItem('titleName'))
+  const res = await getProductList(data)
+  searchList.value = res.data.data // 备份用于搜索的
+  localProduction(res.data.data) // 对数据进行初步修改,添加count属性和checked属性
+})
 
-const store = useStore();
-//当点击步进器时，将购物车信息存入store的cartList中
+const store = useStore()
+// 当点击步进器时，将购物车信息存入store的cartList中
 const changeProduct = function (data) {
-  store.commit("changeCartList", { ...data, title: title.value }); //更改本地缓存
+  store.commit('changeCartList', { ...data, title: title.value }) // 更改本地缓存
   // store.commit("changeTotalPrice", props.title);
-};
+}
 
 // 监听搜索栏传来的searchProduct的数据变化
 watch(
   () => props.searchProduct,
   (value) => {
-    if (value == "") {
-      productList.value = searchList.value;
+    if (value == '') {
+      productList.value = searchList.value
     } else {
       productList.value = searchList.value.filter((item) => {
-        return item.name.includes(value);
-      });
+        return item.name.includes(value)
+      })
     }
   }
-);
+)
 // 当小卡片的值引起的数据变化时，应该更新本页面的数据
 watch(() => store.state.cartList[title.value],
   newVal => {
     // 如果不是清除购物车，改变的只是某个商品的数量
     if (newVal) {
-      out: for (let i in newVal) {
-        for (let j in productList.value) {
+      out: for (const i in newVal) {
+        for (const j in productList.value) {
           if (i == productList.value[j].id) {
-            productList.value[j].count = newVal[i].count;
-            productList.value[j].checked = newVal[i].checked;
-            break out;
+            productList.value[j].count = newVal[i].count
+            productList.value[j].checked = newVal[i].checked
+            break out
           }
         }
       }
@@ -132,8 +132,8 @@ watch(() => store.state.cartList[title.value],
     // 清楚本店的购物车时
     else {
       productList.value.forEach(item => {
-        item.count = 0;
-        item.checked = true;
+        item.count = 0
+        item.checked = true
       })
     }
   },
@@ -142,9 +142,9 @@ watch(() => store.state.cartList[title.value],
   }
 )
 
-//在刷新的时候赶紧设个缓存
+// 在刷新的时候赶紧设个缓存
 window.addEventListener('beforeunload', function () {
-  localStorage.setItem("titleName", JSON.stringify(title.value));
+  localStorage.setItem('titleName', JSON.stringify(title.value))
 })
 </script>
 

@@ -8,26 +8,26 @@
 </template>
 
 <script setup>
-import { defineProps, ref, onMounted, watchEffect } from "vue";
-import shopButtom from "@/components/shop/shopButtom.vue";
-import shopInfo from "@/components/shop/shopInfo.vue";
-import shopTop from "@/components/shop/shopTop.vue";
-import shopContent from "@/components/shop/shopContent.vue";
-import { getShopInfo } from "@/request/api/shop.js";
-let shopList = ref([]),
-  searchProduct = ref("");
-let props = defineProps({
+import { defineProps, ref, onMounted, watchEffect } from 'vue'
+import shopButtom from '@/components/shop/shopButtom.vue'
+import shopInfo from '@/components/shop/shopInfo.vue'
+import shopTop from '@/components/shop/shopTop.vue'
+import shopContent from '@/components/shop/shopContent.vue'
+import { getShopInfo } from '@/request/api/shop.js'
+const shopList = ref([])
+const searchProduct = ref('')
+const props = defineProps({
   id: String,
-  title: String,
-});
+  title: String
+})
 const searchRes = function (product) {
-  searchProduct.value = product;
-};
+  searchProduct.value = product
+}
 onMounted(async () => {
-  let res = await getShopInfo(props.id);
-  shopList.value = [res.data.data];
+  const res = await getShopInfo(props.id)
+  shopList.value = [res.data.data]
   // console.log($ref.shopInfodata)
-});
+})
 </script>
 
 <style>

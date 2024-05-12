@@ -61,25 +61,25 @@
 </template>
 
 <script setup>
-import docker from "@/components/Home/_docker.vue";
-import { ref } from "vue";
-import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+import docker from '@/components/Home/_docker.vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 // import ImgCutter from 'vue-img-cutter';
 
-const store = useStore();
-const show = ref(false);
+const store = useStore()
+const show = ref(false)
 
 const actions = [
   {
-    name: "退出登录",
+    name: '退出登录'
   }, {
-    name: "更改账户信息",
+    name: '更改账户信息'
   }
-];
+]
 const onSelect = (item) => {
   if (item.name === '退出登录') {
-    localStorage.removeItem('userInfo');
+    localStorage.removeItem('userInfo')
     localStorage.removeItem('isLogin')
     router.push({
       name: 'login'
@@ -93,24 +93,22 @@ const onSelect = (item) => {
 }
 
 const afterRead = function (file) {
-  const img = document.getElementById('img');
-  img.setAttribute('src', file.content);
+  const img = document.getElementById('img')
+  img.setAttribute('src', file.content)
   // console.log(file);
 }
 
+const userInfo = JSON.parse(localStorage.getItem('userInfo')).data
 
-
-let userInfo = JSON.parse(localStorage.getItem('userInfo')).data;
-
-const router = useRouter();
-let toaddress = function () {
+const router = useRouter()
+const toaddress = function () {
   router.push({
     name: 'address',
     params: {
       address: 'fromMy'
     }
   })
-  store.commit('changeFrom', 'fromMy');
+  store.commit('changeFrom', 'fromMy')
 }
 </script>
 
@@ -175,8 +173,6 @@ div {
         width: 3.5rem;
         height: 2.4rem;
       }
-
-
 
     }
 

@@ -1,9 +1,9 @@
-import service from "..";
+import service from '..'
 
-export function saveUser(id, data) {
+export function saveUser (id, data) {
   return service({
-    method: "POST",
+    method: 'POST',
     url: `/api/v1/saveUser/${id}`,
-    data: data,
-  });
+    data: data
+  })
 }

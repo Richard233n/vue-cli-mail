@@ -18,66 +18,65 @@
         isDefault: info.isDefault,
     }" @save="onSave" />
 </template>
-    
+
 <script setup>
 import { onMounted, ref, defineProps } from 'vue'
-import { useRouter } from 'vue-router';
-import { updateAddress, beDefault } from "@/request/api/address.js";
-import { areaList } from '@vant/area-data';
+import { useRouter } from 'vue-router'
+import { updateAddress, beDefault } from '@/request/api/address.js'
+import { areaList } from '@vant/area-data'
 
 const props = defineProps({
-    data: String,
+  data: String
 })
 
-const info = ref({});
+const info = ref({})
 
-const router = useRouter();
+const router = useRouter()
 const onClickLeft = function () {
-    router.go(-1)
-};
+  router.go(-1)
+}
 const onClickRight = function () {
 
 }
 
-const userid = JSON.parse(localStorage.getItem('userInfo')).data.id;
+const userid = JSON.parse(localStorage.getItem('userInfo')).data.id
 const onSave = async function (content) {
-    await updateAddress(userid, {
-        id: info.value.address_id,
-        real_name: content.name,
-        mobile: content.tel,
-        city: content.province + content.city,
-        area: content.county,
-        house: content.addressDetail
-    });
-    if (content.isDefault) {
-        await beDefault(userid, {
-            id: info.value.address_id,
-            is_default: 1
-        });
-    }
-    router.go(-1)
+  await updateAddress(userid, {
+    id: info.value.address_id,
+    real_name: content.name,
+    mobile: content.tel,
+    city: content.province + content.city,
+    area: content.county,
+    house: content.addressDetail
+  })
+  if (content.isDefault) {
+    await beDefault(userid, {
+      id: info.value.address_id,
+      is_default: 1
+    })
+  }
+  router.go(-1)
 }
 const formatData = function () {
-    let data = JSON.parse(props.data);
-    info.value = {
-        address_id: data.address_id,
-        name: data.name,
-        tel: data.tel,
-        addressDetail: data.area,
-        // areaCode: data.areaCode,
-        province: data.city,
-        city: '',
-        county: '',
-        isDefault: data.isDefault,
-    }
+  const data = JSON.parse(props.data)
+  info.value = {
+    address_id: data.address_id,
+    name: data.name,
+    tel: data.tel,
+    addressDetail: data.area,
+    // areaCode: data.areaCode,
+    province: data.city,
+    city: '',
+    county: '',
+    isDefault: data.isDefault
+  }
 }
 onMounted(() => {
-    formatData();
+  formatData()
 })
 
-
 </script>
-    
+
 <style scoped>
 .addresstop {
     padding: 0.25rem 0.5rem;

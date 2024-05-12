@@ -16,10 +16,10 @@ import {
   AddressEdit,
   Uploader,
   ActionSheet,
-  Dialog,
-} from "vant";
+  Dialog
+} from 'vant'
 // 放入数组中
-let plugins = [
+const plugins = [
   Form,
   Field,
   CellGroup,
@@ -37,10 +37,10 @@ let plugins = [
   AddressEdit,
   Uploader,
   ActionSheet,
-  Dialog,
-];
-export default function getVant(app) {
+  Dialog
+]
+export default function getVant (app) {
   plugins.forEach((item) => {
-    return app.use(item);
-  });
+    return app.use(item)
+  })
 }

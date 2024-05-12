@@ -19,7 +19,6 @@
             </div>
           </div>
 
-
         </div>
         <div class="buttom">
           <div class="totallInfo">共计{{ checkCount(key) }}件/{{ checkprice(key) }}元</div>
@@ -34,38 +33,37 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import docker from "@/components/Home/_docker.vue";
-import { useComputePrice } from "@/composible/priceComputed.js";
+import { onMounted, ref } from 'vue'
+import docker from '@/components/Home/_docker.vue'
+import { useComputePrice } from '@/composible/priceComputed.js'
 
 // 每个商店都有单独的价格和数量，所以传入自己的商店名，及逆行计算价格
 const checkprice = function (title) {
-  let { computedShopPrice } = useComputePrice(title);
-  return computedShopPrice;
-};
+  const { computedShopPrice } = useComputePrice(title)
+  return computedShopPrice
+}
 const checkCount = function (title) {
-  let { computedShopCount } = useComputePrice(title);
-  return computedShopCount;
+  const { computedShopCount } = useComputePrice(title)
+  return computedShopCount
 }
 
-
 // 商店数量
-let shopCount = ref(0); //修改需要改value哦
+const shopCount = ref(0) // 修改需要改value哦
 const totalshopcount = function () {
-  for (let i in local.value) {
+  for (const i in local.value) {
     if (local.value[i]) {
       shopCount.value++
     }
   }
 }
 // 渲染列表
-let local = ref({});
-local.value = JSON.parse(localStorage.getItem("productList")) || {};
+const local = ref({})
+local.value = JSON.parse(localStorage.getItem('productList')) || {}
 
 const removeFalse = function () {
-  for (let i in local.value) {
+  for (const i in local.value) {
     // 把没选中的删除
-    for (let j in local.value[i]) {
+    for (const j in local.value[i]) {
       if (!local.value[i][j].checked) {
         delete local.value[i][j]
       }
@@ -77,10 +75,10 @@ const removeFalse = function () {
   }
 }
 onMounted(() => {
-  totalshopcount();
+  totalshopcount()
   // 除去本地缓存中select为false的那项
   removeFalse()
-});
+})
 </script>
 
 <style lang="scss" scoped>
