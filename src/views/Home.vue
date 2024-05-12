@@ -2,7 +2,7 @@
     <div style="width: 100%; overflow: hidden; overflow-y: auto">
         <div class="location">
             <img class="left" src="@/assets/images/local.png" alt="" />
-            <span>山东省济南市自贸区鲁商凤凰广场汉码未来</span>
+            <span>古北城南三十里酒肆</span>
             <img class="right" src="@/assets/images/remind.png" alt="" />
         </div>
         <!-- search -->
@@ -12,7 +12,7 @@
         </div>
         <!-- banner -->
         <div class="banner">
-            <img src="http://webapi.hanmaweilai.com/public/static/images/banner.jpg" alt="" />
+            <img src="https://www.freeimg.cn/i/2024/05/11/663f1092d0308.jpeg" alt="" />
         </div>
         <!-- classification -->
         <div class="classification-wrap">
